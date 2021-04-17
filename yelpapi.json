@@ -1,0 +1,41 @@
+{"name": "burrito-finder",
+"client_id": "ETCLtUQxs8A4ooQID9bSWw",
+"api_key" : "dvH3CsRPIr4UkWtnLkEOMnGj-KiNkj6pwhHSqnKdanToZuAWanDhTLFwycI2mB_5ZLm3lvmJ9LdFCdtanWXkPKmyUi2wVRZRY2oYXuz5WcUDxz6f-dYe--YT57p3YHYx"
+
+/* fetch('./script.js', {
+    method: 'Post',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    body: JSON.stringify({
+        name: ''
+    })
+}) .then(res => {
+    return res.json()
+})
+    .then(data =>console.log(data))
+    .catch(error =>console.log('ERROR'))
+
+   
+
+
+term = 'Burrito'
+location = 'San Diego CA'
+SEARCH_LIMIT = 10
+
+url = 'https://api.yelp.com/v3/businesses/search'
+
+headers = {
+        'Authorization': 'Bearer {}'.format(api_key),
+    }
+
+url_params = {
+                'term': term.replace(' ', '+'),
+                'location': location.replace(' ', '+'),
+                'limit': SEARCH_LIMIT
+            }
+response = requests.get(url, headers=headers, params=url_params)
+print(response)
+print(type(response.text))
+print(response.text[:1000])
+        }
