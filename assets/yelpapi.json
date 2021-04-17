@@ -1,0 +1,114 @@
+{"name": "burrito-finder",
+    "client_id": "ETCLtUQxs8A4ooQID9bSWw",
+    "api_key" : "dvH3CsRPIr4UkWtnLkEOMnGj-KiNkj6pwhHSqnKdanToZuAWanDhTLFwycI2mB_5ZLm3lvmJ9LdFCdtanWXkPKmyUi2wVRZRY2oYXuz5WcUDxz6f-dYe--YT57p3YHYx"
+    
+    "--------"
+    {
+        "name": "burrito-radar",
+        "version": "1.0.0",
+        "description": "A Burrito Locator",
+        "main": "index.js",
+        "repository": "https://github.com/aaroncrows/burrito-radar",
+        "scripts": {
+          "start": "npm run relay && node ./scripts/start-production",
+          "start:dev": "node ./scripts/start-dev",
+          "build": "node ./scripts/build-production",
+          "test": "echo \"Error: no test specified\" && exit 1",
+          "relay": "relay-compiler --src ./src --schema ./data/schema.graphql"
+        },
+        "keywords": [],
+        "author": "Aaron Krause <aaronjkrause@gmail.com>",
+        "license": "ISC",
+        "babel": {
+          "presets": [
+            "env",
+            "react",
+            "stage-2"
+          ],
+          "plugins": [
+            "relay"
+          ]
+        },
+        "dependencies": {
+          "autoprefixer": "^7.2.2",
+          "babel-cli": "^6.26.0",
+          "babel-core": "^6.26.0",
+          "babel-loader": "^7.1.2",
+          "babel-plugin-relay": "^1.4.1",
+          "babel-preset-env": "^1.6.1",
+          "babel-preset-react": "^6.24.1",
+          "babel-preset-stage-2": "^6.24.1",
+          "cors": "^2.8.4",
+          "css-loader": "^0.28.7",
+          "express": "^4.16.2",
+          "favicons-webpack-plugin": "0.0.7",
+          "graphql-relay": "^0.5.4",
+          "html-webpack-plugin": "^2.30.1",
+          "node-sass": "^4.7.2",
+          "npm-run-all": "^4.1.2",
+          "picnic": "^6.4.0",
+          "postcss-flexbugs-fixes": "^3.2.0",
+          "postcss-loader": "^2.0.9",
+          "query-string": "^5.0.1",
+          "react": "^16.2.0",
+          "react-dom": "^16.2.0",
+          "react-relay": "^1.4.1",
+          "relay": "^0.8.0-1",
+          "relay-compiler": "^1.4.1",
+          "request": "^2.83.0",
+          "sass-loader": "^6.0.6",
+          "skeleton-css": "^2.0.4",
+          "style-loader": "^0.19.0",
+          "uglifyjs-webpack-plugin": "^1.1.4",
+          "webpack": "^3.10.0",
+          "webpack-dev-server": "^2.9.6",
+          "whatwg-fetch": "^2.0.3"
+        }
+      }
+     
+    
+    
+    "----------"
+    
+    
+    
+    /* fetch('./script.js', {
+        method: 'Post',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        body: JSON.stringify({
+            name: ''
+        })
+    }) .then(res => {
+        return res.json()
+    })
+        .then(data =>console.log(data))
+        .catch(error =>console.log('ERROR'))
+    
+       
+    
+    
+    term = 'Burrito'
+    location = 'San Diego CA'
+    SEARCH_LIMIT = 10
+    
+    url = 'https://api.yelp.com/v3/businesses/search'
+    
+    headers = {
+            'Authorization': 'Bearer {}'.format(api_key),
+        }
+    
+    url_params = {
+                    'term': term.replace(' ', '+'),
+                    'location': location.replace(' ', '+'),
+                    'limit': SEARCH_LIMIT
+                }
+    response = requests.get(url, headers=headers, params=url_params)
+    print(response)
+    print(type(response.text))
+    print(response.text[:1000])
+            }
+            */
+    
+    
