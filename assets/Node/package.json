@@ -1,0 +1,14 @@
+{
+  "name": "Updates",
+  "version": "1.0.0",
+  "description": "Dreamweaver Soft update",
+  "dependencies": {
+    "decompress-zip": "^0.3.0",
+    "file-size": "^1.0.0",
+    "filesize-parser": "^1.4.1",
+    "fs-extra": "^3.0.1",
+    "request": "^2.81.0",
+    "temp": "^0.8.3",
+    "xml-writer": "^1.7.0"
+  }
+}
