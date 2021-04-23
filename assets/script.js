@@ -1,81 +1,107 @@
-/*function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(burritofinder);
-    } else {
-      x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  }
 
-function burritofinder(position) {
-   
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    var settings = {
-        //concatenat latitude and longitude
-        "url": "https://api.yelp.com/v3/businesses/search?latitude="+latitude+"&longitude="+longitude,
-        "method": "GET",
-        "timeout": 0,
-        "headers": {
-           "Authorization": "Bearer dvH3CsRPIr4UkWtnLkEOMnGj-KiNkj6pwhHSqnKdanToZuAWanDhTLFwycI2mB_5ZLm3lvmJ9LdFCdtanWXkPKmyUi2wVRZRY2oYXuz5WcUDxz6f-dYe--YT57p3YHYx",
-         //allows additional websites to use yelp API
-         "Access-Control-Allow-Origin": "*"
-        },
-      };
-      
-      $.ajax(settings).done(function (response) {
-        console.log(response);
-      });
-}
 
-burritofinder(getLocation());
+/*
+1. get a list of the farmers markets relative to a zipcode.
+2. plot the farmers markets into a google map, based on adddress.
+3. automatically determin users location on page load.
+4. allow users to save to a list.
 */
 
-function getResults(zip) {
-    // or
-    // function getResults(lat, lng) {
-    $.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        // submit a get request to the restful service zipSearch or locSearch.
-        url: "http://search.ams.usda.gov/farmersmarkets/v1/data.svc/zipSearch?zip=" + zip,
-        // or
-        // url: "http://search.ams.usda.gov/farmersmarkets/v1/data.svc/locSearch?lat=" + lat + "&lng=" + lng,
-        dataType: 'jsonp',
-        jsonpCallback: 'searchResultsHandler'
-    });
-}
-//iterate through the JSON result object.
-function searchResultsHandler(searchResults) {
-    for (var key in searchresults) {
-        alert(key);
-        var results = searchresults[key];
-        for (var i = 0; i < results.length; i++) {
-            var result = results[i];
-            for (var key in result) {
-                //only do an alert on the first search result
-                if (i == 0) {
-                    alert(result[key]);
-                }
-            }
-        }
+//Create an access token for the mapbox
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFpa2l0dHlnYW1pbmciLCJhIjoiY2tuc2U1cjBiMHB2NDJ2cjExcHc4YzJ6byJ9.UYEROaXgrVJ27dzy-ip-zA';
+//Create a client for mapbox
+var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+
+//Request location services in the users browser
+function getLocation() {
+    if (navigator.geolocation) {
+        //If the user has location services call back the location to the showPosition function.
+        navigator.geolocation.getCurrentPosition(showPosition);
     }
 }
 
-function getDetails(id) {
+
+function showPosition(position) {
+    //Once the callback is activated render the map and center it on the retreived coordinates.
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: {lat: position.coords.latitude, lng: position.coords.longitude},
+        zoom: 10
+    });
+    
+}
+
+//Call Get Location to start the chain of events.
+getLocation();
+
+
+//When the form for zipcodes is submitted send that to a series of handlers starting by getting a location from a zipcode.
+$('#searchbyzip').submit(function(event){
+    event.preventDefault();
+    getmarketbyzip($('input[name=zip]').val());
+});
+
+
+
+function getmarketbyzip(zip) {
+    //Make an api Request and send the results to the zipHandler function.
     $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        // submit a get request to the restful service mktDetail.
-        url: "http://search.ams.usda.gov/farmersmarkets/v1/data.svc/mktDetail?id=" + id,
+        url: "http://search.ams.usda.gov/farmersmarkets/v1/data.svc/zipSearch?zip=" + zip,
         dataType: 'jsonp',
-        jsonpCallback: 'detailResultHandler'
+        jsonpCallback: 'zipHandler'
     });
 }
-//iterate through the JSON result object.
-function detailResultHandler(detailresults) {
-    for (var key in detailresults) {
-        alert(key);
-        var results = detailresults[key];
-        alert(results['GoogleLink']);
-    }
+
+function getmarketbyid(searchresults) {
+    //Foreach item in the search results make an api request to get the full details. Send the results to detailResultHandler function.
+    searchresults.forEach(function(item) {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "http://search.ams.usda.gov/farmersmarkets/v1/data.svc/mktDetail?id=" + item.id,
+            dataType: 'jsonp',
+            jsonpCallback: 'detailResultHandler'
+        });
+    });
 }
+
+
+//Take the detail results and add a market to the map.
+function detailResultHandler(detailresults) {
+    //Transforms a regular address query string into a mappable marker.
+    mapboxClient.geocoding
+    .forwardGeocode({
+        query: detailresults.marketdetails.Address,
+        autocomplete: false,
+        limit: 1
+    })
+    .send()
+    .then(function (response) {
+        if (
+            response &&
+            response.body &&
+            response.body.features &&
+            response.body.features.length
+            ) {
+                var feature = response.body.features[0];
+                
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: feature.center,
+                    zoom: 10
+                });
+                
+                //Creates and adds marker to the map as well as centers it.
+                new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+            }
+        });
+    }
+    
+    //Sends the results of the zip code search to start getting details on each item.
+    function zipHandler(searchresults) {
+        getmarketbyid(searchresults.results);
+    }

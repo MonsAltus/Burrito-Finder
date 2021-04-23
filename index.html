@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
 <title>Burrito Finder</title>
 
 <meta charset="utf-8">
@@ -17,23 +18,14 @@
 <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-  <div id='map' style='width: 400px; height: 300px;'></div>
-<script>
-mapboxgl.accessToken = 'pk.eyJ1IjoibWFpa2l0dHlnYW1pbmciLCJhIjoiY2tuc2U1cjBiMHB2NDJ2cjExcHc4YzJ6byJ9.UYEROaXgrVJ27dzy-ip-zA';
-var map = new mapboxgl.Map({
-container: 'map', // container ID
-style: 'mapbox://styles/mapbox/streets-v11', // style URL
-center: [-74.5, 40], // starting position [lng, lat]
-zoom: 9 // starting zoom
-});
-</script>
+  <div id='map' style='width: 100%; height: 300px;'></div>
 <div id="demo"></div>
 <div class="header">
   
   <h2>Looking for a burrito 🌯 </h2>
-  <form>
-    <label for="adress ">Location: Zip Code</label><br>
-    <input type="text" placeholder="Search.." name="search">
+  <form id="searchbyzip">
+    <label for="address">Location: Zip Code</label><br>
+    <input type="text" placeholder="Search.." name="zip">
     <button type="submit"><i class="fa fa-search">🌯</i></button>
   </form>
 </div>
