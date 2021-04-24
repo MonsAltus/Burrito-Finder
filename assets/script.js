@@ -23,7 +23,7 @@ $('#searchbyzip').submit(function(event){
 });
 
 function getmarketbyzip(zip) {
-    console.log(zip)
+    // console.log(zip)
     //Make an api Request and send the results to the zipHandler function.
     $.ajax({
         type: "GET",
@@ -36,12 +36,12 @@ function getmarketbyzip(zip) {
 
     //Sends the results of the zip code search to start getting details on each item.
     function zipHandler(searchresults) {
-        getmarketbyid(searchresults.results.slice(0, 5));
+        getmarketbyid(searchresults.results.slice(0, 10));
         console.log(searchresults.results)
     }
 
 function getmarketbyid(searchresults) {
-    console.log(searchresults)
+    // console.log(searchresults)
         var detailResultsArray = []
     //Foreach item in the search results make an api request to get the full details. Send the results to detailResultHandler function.
     searchresults.forEach(function(item) {
@@ -52,7 +52,7 @@ function getmarketbyid(searchresults) {
             dataType: 'jsonp',
             // jsonpCallback: 'detailResultHandler'
             success: function(result) {
-                detailResultsArray.push({result: result, marketName: item.marketname})
+                detailResultsArray.push({result: result, marketName: item.marketname.slice(4).trim()})
                 if (detailResultsArray.length === searchresults.length) {
                     if (map.getSource("places")) {
                         map.getSource('places').setData(generateSource(detailResultsArray, true));
@@ -88,16 +88,17 @@ function generateSource(detailResultsArray, sourceExists=false) {
         console.log(coordinates)
         console.log(element.marketName)
         console.log(element)
+        console.log(element.result.marketdetails.GoogleLink)
         var featureObject = {
-            'type': 'Feature',
-            'properties': {
-            'description':
-            `<strong>${element.marketName}</strong><p>Lorem Ipsum</p>`
-            },
-            'geometry': {
-            'type': 'Point',
-            'coordinates': coordinates
-            }
+                'type': 'Feature',
+                'properties': {
+                'description':
+                    `<strong>${element.marketName}</strong><p>${element.result.marketdetails.Address}<br><strong>Schedule: </strong>${element.result.marketdetails.Schedule}<strong>Products: </strong>${element.result.marketdetails.Products}</p>`
+                },
+                'geometry': {
+                'type': 'Point',
+                'coordinates': coordinates
+                }
             }
         featuresArray.push(featureObject)
     }
@@ -108,11 +109,11 @@ function generateSource(detailResultsArray, sourceExists=false) {
             }
     } else {
     var sourceGeoJson = {
-        'type': 'geojson',
-        'data': {
-        'type': 'FeatureCollection',
-        'features': featuresArray
-        }
+            'type': 'geojson',
+            'data': {
+            'type': 'FeatureCollection',
+            'features': featuresArray
+            }
         }
         return sourceGeoJson;
     }
