@@ -94,7 +94,7 @@ function generateSource(detailResultsArray, sourceExists=false) {
                 'type': 'Feature',
                 'properties': {
                 'description':
-                    `<strong>${element.marketName}</strong><p>${element.result.marketdetails.Address}<br><strong>Schedule: </strong>${element.result.marketdetails.Schedule}<strong>Products: </strong>${element.result.marketdetails.Products}</p>`
+                    `<p><strong>${element.marketName}</strong><br>${element.result.marketdetails.Address}<br><strong>Schedule: </strong>${element.result.marketdetails.Schedule}<strong>Products: </strong>${element.result.marketdetails.Products}</p>`
                 },
                 'geometry': {
                 'type': 'Point',
