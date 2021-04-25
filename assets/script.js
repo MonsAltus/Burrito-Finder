@@ -38,6 +38,7 @@ function getmarketbyzip(zip) {
     function zipHandler(searchresults) {
         getmarketbyid(searchresults.results.slice(0, 10));
         console.log(searchresults.results)
+       
     }
 
 function getmarketbyid(searchresults) {

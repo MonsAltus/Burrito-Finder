@@ -3,23 +3,23 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Original Surfer', cursive;
 }
 
 .nav{
     color:white;
-    font-family: 'Zen Dots', cursive;
+    font-family: 'Original Surfer', cursive;
 }
 
 /* Style the header */
 .header {
-    background-color: black;
+    background-color: lightgreen;
     color: white;
     border-bottom: 2px solid white;
-    padding: 30px;
+    padding: 25px;
     text-align: center;
-    font-size: 20px;
-    font-family: 'Zen Dots', cursive;
+    font-size: 25px;
+    font-family: 'Original Surfer', cursive;
 }
 
 /* Container for flexboxes */
@@ -32,7 +32,7 @@ body {
 .column {
     padding: 10px;
     height: 500px; 
-    font-family: 'Zen Dots', cursive;
+    font-family: 'Original Surfer', cursive;
     border: 2px solid white;
 }
 
