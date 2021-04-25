@@ -14,10 +14,10 @@ This page is intended to help you find local farmers markets. Upon entering a zi
 - Mapbox
 
 ### Website Preview:
-<!-- ![Image of website preview](./assets/preview.png)<br> -->
+![Image of website preview](./assets/preview.png)<br>
 
 ### Links:
-<!-- [Link to deployed website](https://monsaltus.github.io/PLACEHOLDER/) -->
+[Link to deployed website](https://monsaltus.github.io/Farmers-Market-Search/)
 
 ### Changelog:
 #### index.html:
