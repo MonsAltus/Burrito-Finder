@@ -101,8 +101,14 @@ function generateSource(detailResultsArray, sourceExists=false) {
                 'coordinates': coordinates
                 }
             }
-        featuresArray.push(featureObject)
+        featuresArray.push(featureObject);
+        console.log(featuresArray[0].geometry.coordinates)
+        // Move map to first pin in array.
+        if (index == 0) {
+            map.flyTo({center: featuresArray[0].geometry.coordinates});
+        }
     }
+    
     if (sourceExists) {
         return {
             'type': 'FeatureCollection',
@@ -120,6 +126,9 @@ function generateSource(detailResultsArray, sourceExists=false) {
     }
 }
 
+// function flyTo(coordinates) {
+//     map.flyTo({center: [-117.2, 33]})
+// }
 
     map.on('load', function () {
         // Create a popup, but don't add it to the map yet.
