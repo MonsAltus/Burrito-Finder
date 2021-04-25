@@ -37,7 +37,7 @@ function getmarketbyzip(zip) {
     //Sends the results of the zip code search to start getting details on each item.
     function zipHandler(searchresults) {
         getmarketbyid(searchresults.results.slice(0, 10));
-        console.log(searchresults.results)
+        // console.log(searchresults.results)
        
     }
 
@@ -79,17 +79,17 @@ function getmarketbyid(searchresults) {
 }
 
 function generateSource(detailResultsArray, sourceExists=false) {
-    console.log(detailResultsArray)
+    // console.log(detailResultsArray)
     var featuresArray = []
     for (let index = 0; index < detailResultsArray.length; index++) {
         const element = detailResultsArray[index];
         var link = new URL(element.result.marketdetails.GoogleLink)
         var params = new URLSearchParams(link.search)
         var coordinates = [params.get("q").split("(")[0].split(",")[1],params.get("q").split("(")[0].split(",")[0]]
-        console.log(coordinates)
-        console.log(element.marketName)
-        console.log(element)
-        console.log(element.result.marketdetails.GoogleLink)
+        // console.log(coordinates)
+        // console.log(element.marketName)
+        // console.log(element)
+        // console.log(element.result.marketdetails.GoogleLink)
         var featureObject = {
                 'type': 'Feature',
                 'properties': {
@@ -102,7 +102,7 @@ function generateSource(detailResultsArray, sourceExists=false) {
                 }
             }
         featuresArray.push(featureObject);
-        console.log(featuresArray[0].geometry.coordinates)
+        // console.log(featuresArray[0].geometry.coordinates)
         // Move map to first pin in array.
         if (index == 0) {
             map.flyTo({center: featuresArray[0].geometry.coordinates});
@@ -125,10 +125,6 @@ function generateSource(detailResultsArray, sourceExists=false) {
         return sourceGeoJson;
     }
 }
-
-// function flyTo(coordinates) {
-//     map.flyTo({center: [-117.2, 33]})
-// }
 
     map.on('load', function () {
         // Create a popup, but don't add it to the map yet.
