@@ -1,5 +1,3 @@
-
-
 /*
 1. get a list of the farmers markets relative to a zipcode.
 2. plot the farmers markets into a google map, based on adddress.
@@ -9,32 +7,14 @@
 
 //Create an access token for the mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFpa2l0dHlnYW1pbmciLCJhIjoiY2tuc2U1cjBiMHB2NDJ2cjExcHc4YzJ6byJ9.UYEROaXgrVJ27dzy-ip-zA';
+
 //Create a client for mapbox
-var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-
-//Request location services in the users browser
-function getLocation() {
-    if (navigator.geolocation) {
-        //If the user has location services call back the location to the showPosition function.
-        navigator.geolocation.getCurrentPosition(showPosition);
-    }
-}
-
-
-function showPosition(position) {
-    //Once the callback is activated render the map and center it on the retreived coordinates.
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: {lat: position.coords.latitude, lng: position.coords.longitude},
-        zoom: 10
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-117.2, 33],
+    zoom: 9
     });
-    
-}
-
-//Call Get Location to start the chain of events.
-getLocation();
-
 
 //When the form for zipcodes is submitted send that to a series of handlers starting by getting a location from a zipcode.
 $('#searchbyzip').submit(function(event){
@@ -42,9 +22,8 @@ $('#searchbyzip').submit(function(event){
     getmarketbyzip($('input[name=zip]').val());
 });
 
-
-
 function getmarketbyzip(zip) {
+    // console.log(zip)
     //Make an api Request and send the results to the zipHandler function.
     $.ajax({
         type: "GET",
@@ -55,7 +34,15 @@ function getmarketbyzip(zip) {
     });
 }
 
+    //Sends the results of the zip code search to start getting details on each item.
+    function zipHandler(searchresults) {
+        getmarketbyid(searchresults.results.slice(0, 10));
+        console.log(searchresults.results)
+    }
+
 function getmarketbyid(searchresults) {
+    // console.log(searchresults)
+        var detailResultsArray = []
     //Foreach item in the search results make an api request to get the full details. Send the results to detailResultHandler function.
     searchresults.forEach(function(item) {
         $.ajax({
@@ -63,45 +50,104 @@ function getmarketbyid(searchresults) {
             contentType: "application/json; charset=utf-8",
             url: "http://search.ams.usda.gov/farmersmarkets/v1/data.svc/mktDetail?id=" + item.id,
             dataType: 'jsonp',
-            jsonpCallback: 'detailResultHandler'
+            // jsonpCallback: 'detailResultHandler'
+            success: function(result) {
+                detailResultsArray.push({result: result, marketName: item.marketname.slice(4).trim()})
+                if (detailResultsArray.length === searchresults.length) {
+                    if (map.getSource("places")) {
+                        map.getSource('places').setData(generateSource(detailResultsArray, true));
+                    } else {
+                    // Add a layer showing the places.
+                    map.addSource('places', generateSource(detailResultsArray));
+                    console.log(map.getSource("places"))
+                    map.addLayer({
+                        'id': 'places',
+                        'type': 'circle',
+                        'source': 'places',
+                        'paint': {
+                            'circle-color': '#4264fb',
+                            'circle-radius': 6,
+                            'circle-stroke-width': 2,
+                            'circle-stroke-color': '#ffffff'
+                        }
+                    })}
+                }
+            }
         });
     });
 }
 
-
-//Take the detail results and add a market to the map.
-function detailResultHandler(detailresults) {
-    //Transforms a regular address query string into a mappable marker.
-    mapboxClient.geocoding
-    .forwardGeocode({
-        query: detailresults.marketdetails.Address,
-        autocomplete: false,
-        limit: 1
-    })
-    .send()
-    .then(function (response) {
-        if (
-            response &&
-            response.body &&
-            response.body.features &&
-            response.body.features.length
-            ) {
-                var feature = response.body.features[0];
-                
-                var map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v11',
-                    center: feature.center,
-                    zoom: 10
-                });
-                
-                //Creates and adds marker to the map as well as centers it.
-                new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+function generateSource(detailResultsArray, sourceExists=false) {
+    console.log(detailResultsArray)
+    var featuresArray = []
+    for (let index = 0; index < detailResultsArray.length; index++) {
+        const element = detailResultsArray[index];
+        var link = new URL(element.result.marketdetails.GoogleLink)
+        var params = new URLSearchParams(link.search)
+        var coordinates = [params.get("q").split("(")[0].split(",")[1],params.get("q").split("(")[0].split(",")[0]]
+        console.log(coordinates)
+        console.log(element.marketName)
+        console.log(element)
+        console.log(element.result.marketdetails.GoogleLink)
+        var featureObject = {
+                'type': 'Feature',
+                'properties': {
+                'description':
+                    `<strong>${element.marketName}</strong><p>${element.result.marketdetails.Address}<br><strong>Schedule: </strong>${element.result.marketdetails.Schedule}<strong>Products: </strong>${element.result.marketdetails.Products}</p>`
+                },
+                'geometry': {
+                'type': 'Point',
+                'coordinates': coordinates
+                }
             }
+        featuresArray.push(featureObject)
+    }
+    if (sourceExists) {
+        return {
+            'type': 'FeatureCollection',
+            'features': featuresArray
+            }
+    } else {
+    var sourceGeoJson = {
+            'type': 'geojson',
+            'data': {
+            'type': 'FeatureCollection',
+            'features': featuresArray
+            }
+        }
+        return sourceGeoJson;
+    }
+}
+
+
+    map.on('load', function () {
+        // Create a popup, but don't add it to the map yet.
+        var popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
         });
-    }
-    
-    //Sends the results of the zip code search to start getting details on each item.
-    function zipHandler(searchresults) {
-        getmarketbyid(searchresults.results);
-    }
+
+        map.on('mouseenter', 'places', function (e) {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = e.features[0].properties.description;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
+        });
+
+        map.on('mouseleave', 'places', function () {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+    });
