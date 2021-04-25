@@ -14,14 +14,17 @@ body {
 /* Style the header */
 .header {
     background-color: lightgreen;
-    color: white;
+    color: black;
     border-bottom: 2px solid white;
-    padding: 25px;
+    padding: 20px;
     text-align: center;
-    font-size: 25px;
+    font-size: 20px;
     font-family: 'Original Surfer', cursive;
 }
+.Famers{
+font-size: 30px;
 
+}
 /* Container for flexboxes */
 .row {
     display: -webkit-flex;
