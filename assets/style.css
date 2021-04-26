@@ -8,12 +8,12 @@ body {
 
 h1 {
     font-size: 30px;
-  }
+}
 
-.nav{
+/* .nav{
     color:white;
     font-family: 'Original Surfer', cursive;
-}
+} */
 
 /* Style the header */
 header {
@@ -26,33 +26,47 @@ header {
     font-family: 'Original Surfer', cursive;
 }
 
-.farmers{
-font-size: 30px;
-}
-
-/* Container for flexboxes */
-.row {
-    display: -webkit-flex;
-    display: flex;
+main {
+    font-family: 'Roboto', sans-serif;
 }
 
 /* Create three unequal columns that sits next to each other */
 .column {
     padding: 10px;
-    height: 500px; 
-    font-family: 'Original Surfer', cursive;
+    height: 70vh;
     border: 2px solid white;
 }
 
 .side {
-
+    /* display: flex; */
+    flex-wrap: wrap;
+    padding: 15px;
 }
 
-p {
-    font-family: Arial, Helvetica, sans-serif;
+.side li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    /* margin-left: 10px; */
+    /* margin: 0 10px 5px 10px; */
+    }
+
+.side button {
+    font-size: .9rem;
+    display: flex;
+    justify-self: right;
+    align-self: start;
 }
 
-  /* Style the footer */
+.side a:hover {
+color: white
+}
+
+ul {
+    font-size: .9rem;
+}
+
+/* Style the footer */
 footer {
     background-color: #f1f1f1;
     padding: 10px;
@@ -60,10 +74,13 @@ footer {
     text-align: left;
 }
 
-/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+/* Responsive layout - Makes side columns shorter on mobile. Makes ul projectedList fit content. */
 @media (max-width: 600px) {
+    #map {
+    height: 450px;
+    }
     .side {
-    height: 200px;
-    max-height: fit-content;
+    min-height: 200px;
+    height: fit-content;
     }
 }

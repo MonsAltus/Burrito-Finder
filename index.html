@@ -14,46 +14,48 @@
 <!-- Link Google Font -->
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Original+Surfer&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
 <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
- 
+
 <header>
-  <h1 id="farmers">Nearest Farmers Market 🌴</h1>
-  <h2 id="farmers">Enter your zip code and hover over the map to see details.</h2>
+  <h1>Nearest Farmers Market 🌴</h1>
+  <h2>Enter your zip code and hover over the map to see details.</h2>
   <form id="searchbyzip">
-    <label for="address">Location: Zip Code</label><br>
+    <label for="address">Location:</label><br>
     <input type="text" placeholder="Search.." name="zip">
     <button type="submit"><i class="fa fa-search">🔍</i></button>
   </form>
 </header>
- 
+
 <main class="columns">
   <!-- Favorites -->
   <div class="column side"  style="background-color:black; color: white;">
-    <h2>Favorites</h2>
+    <h3>Favorites:</h3>
     <ul id="favoritesList">
     </ul>
+    <button class="clear-storage">Clear</button>
   </div>
- 
+
   <div id='map' class="column is-half is-full-mobile"></div>
   <div class="column side"  style="background-color: black; color: white;">
     <ul id="projectedList">
- 
     </ul>
   </div>
 </main>
- 
+
 <footer style="background-color: lightslategray; color: black; text-align: center;">
   <h6>Powered by yours truly <br> Cyrstal Tayor, James Hacklander, Abdi Dahir </h6>
 </footer>
- 
+
 <!-- Link JQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- Link moment.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!-- Link Bulma-->
- 
+
 <script type="text/javascript" src="./assets/script.js"></script>
 </body>
 </html>
