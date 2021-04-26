@@ -81,6 +81,9 @@ function getmarketbyid(searchresults) {
   function generateSource(detailResultsArray, sourceExists=false) {
     // console.log(detailResultsArray)
     var featuresArray = []
+    var marketDisplayList = $('#projectedList')
+    //Clears projectedList element before populating with new data when a new location is searched.
+    marketDisplayList.html("")
     for (let index = 0; index < detailResultsArray.length; index++) {
       const element = detailResultsArray[index];
       var link = new URL(element.result.marketdetails.GoogleLink)
@@ -105,7 +108,7 @@ function getmarketbyid(searchresults) {
       $('#projectedList').append('<li>'+element.marketName+' <button class="favoriteBtn" data-title="'+element.marketName+'" data-link="'+link+'">Favorite</button>  </li>');
     }
     // Move map to first pin in array and zoom in.
-    map.flyTo({center: featuresArray[0].geometry.coordinates, zoom: 8});
+    map.flyTo({center: featuresArray[0].geometry.coordinates, zoom: 9});
     if (sourceExists) {
       return {
         'type': 'FeatureCollection',
