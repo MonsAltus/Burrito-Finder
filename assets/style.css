@@ -10,11 +10,6 @@ h1 {
     font-size: 30px;
 }
 
-/* .nav{
-    color:white;
-    font-family: 'Original Surfer', cursive;
-} */
-
 /* Style the header */
 header {
     background-color: lightgreen;
@@ -38,8 +33,6 @@ main {
 }
 
 .side {
-    /* display: flex; */
-    flex-wrap: wrap;
     padding: 15px;
 }
 
@@ -47,8 +40,6 @@ main {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-    /* margin-left: 10px; */
-    /* margin: 0 10px 5px 10px; */
     }
 
 .side button {
