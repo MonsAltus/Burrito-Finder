@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="shortcut icon" href="#">
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
 <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
@@ -16,36 +17,43 @@
 <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-  
+ 
 <header>
-  <h2 id="farmers ">Nearest Farmers Market 🌴</h2>
+  <h1 id="farmers">Nearest Farmers Market 🌴</h1>
+  <h2 id="farmers">Enter your zip code and hover over the map to see details.</h2>
   <form id="searchbyzip">
     <label for="address">Location: Zip Code</label><br>
     <input type="text" placeholder="Search.." name="zip">
     <button type="submit"><i class="fa fa-search">🔍</i></button>
   </form>
 </header>
-
+ 
 <main class="columns">
+  <!-- Favorites -->
   <div class="column side"  style="background-color:black; color: white;">
-    Save your favorites:
+    <h2>Favorites</h2>
+    <ul id="favoritesList">
+    </ul>
   </div>
+ 
   <div id='map' class="column is-half is-full-mobile"></div>
   <div class="column side"  style="background-color: black; color: white;">
-    Reviews and ratings:
+    <ul id="projectedList">
+ 
+    </ul>
   </div>
 </main>
-
+ 
 <footer style="background-color: lightslategray; color: black; text-align: center;">
   <h6>Powered by yours truly <br> Cyrstal Tayor, James Hacklander, Abdi Dahir </h6>
 </footer>
-
+ 
 <!-- Link JQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- Link moment.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!-- Link Bulma-->
-
+ 
 <script type="text/javascript" src="./assets/script.js"></script>
 </body>
 </html>
