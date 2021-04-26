@@ -102,12 +102,9 @@ function generateSource(detailResultsArray, sourceExists=false) {
                 }
             }
         featuresArray.push(featureObject);
-        // console.log(featuresArray[0].geometry.coordinates)
-        // Move map to first pin in array.
-        if (index == 0) {
-            map.flyTo({center: featuresArray[0].geometry.coordinates});
-        }
     }
+    // Move map to first pin in array.
+    map.flyTo({center: featuresArray[0].geometry.coordinates});
     
     if (sourceExists) {
         return {
