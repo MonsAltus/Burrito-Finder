@@ -42,6 +42,11 @@ main {
     margin-bottom: 5px;
     }
 
+.side li a {
+color: gold;
+}
+
+
 .side button {
     font-size: .9rem;
     display: flex;
@@ -66,7 +71,7 @@ footer {
 }
 
 /* Responsive layout - Makes side columns shorter on mobile. Makes ul projectedList fit content. */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     #map {
     height: 450px;
     }
